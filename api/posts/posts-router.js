@@ -28,7 +28,7 @@ router.get('/:id', async (req, res) => {
         if (post) {
             res.status(202).json(post)
         } else {
-            res.status(404).status.json({
+            res.status(404).json({
                 message: "The post with the specified ID does not exist" 
             })
         }
