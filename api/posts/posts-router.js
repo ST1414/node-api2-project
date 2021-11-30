@@ -20,6 +20,7 @@ router.get('/', (req, res) => {
         })
 })
 
+
 // ----- GET POST BY ID -----
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
@@ -39,6 +40,7 @@ router.get('/:id', async (req, res) => {
     }
 })
 
+
 // ----- CREATE NEW POST -----
 router.post('/', (req, res) => {
 
@@ -46,10 +48,10 @@ router.post('/', (req, res) => {
         res.status(400).json({ // Bad request
             message: "Please provide title and contents for the post"
         })
-    } else {
+    } else { 
         Post.insert(req.body)
         .then( response => {
-            res.status(201).json(response); // Created
+            res.status(201).json(response); // Created  // ***** ERROR IN TESTING *****
         })
         .catch (err => {
             res.status(500).json({ // Server error
@@ -60,18 +62,19 @@ router.post('/', (req, res) => {
 
 })
 
+
 // ----- UPDATE POST BY ID -----
 router.put('/:id', async (req, res) => {
     try {
         
-        if (!req.body.title || !req.body.contents) { // missing title or contents
+        if (!req.body.title || !req.body.contents) { 
             res.status(400).json({ // Bad request
                 message: "Please provide title and contents for the post"
             })
         } else { 
             const post = await Post.update(req.params.id, req.body);
             if (post) { // Success
-                res.status(200).json(post); 
+                res.status(200).json(post);  // ***** ERROR IN TESTING *****
             } else { // id not found
                 res.status(404).json({
                     message: "The post with the specified ID does not exist"
@@ -92,7 +95,7 @@ router.delete('/:id', (req, res) => {
     Post.remove(req.params.id)
         .then(response => {
             if (response > 0) {
-                res.status(200).json({message: "The post has been delete."})
+                res.status(200).json(response)
             } else {
                 res.status(404).json({message: "The post with the specified ID does not exist"})
             }
