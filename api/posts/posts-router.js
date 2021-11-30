@@ -64,7 +64,6 @@ router.post('/', (req, res) => {
 router.put('/:id', async (req, res) => {
     try {
         
-        
         if (!req.body.title || !req.body.contents) { // missing title or contents
             res.status(400).json({ // Bad request
                 message: "Please provide title and contents for the post"
@@ -87,9 +86,23 @@ router.put('/:id', async (req, res) => {
     }
 })
 
+
 // ----- DELETE POST BY ID -----
-// throw new Error("This will be stored in the catch's, err.message"); 
-// message: err.message
+router.delete('/:id', (req, res) => {
+    Post.remove(req.params.id)
+        .then(response => {
+            if (response > 0) {
+                res.status(200).json({message: "The post has been delete."})
+            } else {
+                res.status(404).json({message: "The post with the specified ID does not exist"})
+            }
+        })
+        .catch(err => {
+            res.status(500).json({
+                message: "The post could not be removed"
+            })
+        })
+})
 
 // ----- GET POST COMMENT BY ID -----
 // throw new Error("This will be stored in the catch's, err.message"); 
